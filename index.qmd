@@ -1,9 +1,9 @@
 ---
-title: "Automatização de e-mails usando R"
-subtitle: "{blastula}"
+title: "Automatização de \ne-mails usando R"
+subtitle: "Coda 2022"
 format:
   revealjs:
-    theme: moon
+    theme: default
     self-contained: true
 ---
 
@@ -28,3 +28,46 @@ knitr::include_graphics("imgs/renata.jpg")
 ::::
 
 `rmhirota.github.io/coda2022`
+
+## Newsletters do Núcleo
+
+
+## O que vamos ver
+
+- Criação de email
+  - usando funções do `blastula`
+  - usando templates em .Rmd
+- Envio de email
+- Automatização
+  - cron
+  - Github actions
+
+
+## Criando um email
+
+Podemos usar a função `compose_email`
+
+```{r echo=TRUE}
+blastula::compose_email(
+  body = blastula::md(paste0(
+    "# Header 1\n",
+    "## Header 2\n",
+    "Este é um email _automatizado_ utilizando **blastula**!"
+  )),
+  header = "Workshop Coda",
+  footer = Sys.Date()
+)
+```
+
+## Criando um email
+
+Ou podemos usar um template de .Rmd
+
+```
+---
+title: "Garimpo"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  blastula::blastula_email
+---
+```
