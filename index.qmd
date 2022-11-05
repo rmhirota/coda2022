@@ -1,36 +1,66 @@
 ---
-title: "Automatização de \ne-mails usando R"
+title: "Automatização de emails usando R"
 subtitle: "Coda 2022"
 format:
   revealjs:
-    theme: default
+    theme: solarized
     self-contained: true
 ---
 
 ## Olá! `r emo::ji("wave")` {.smaller}
 
 :::: {.columns}
-
 ::: {.column width="30%"}
-
-```{r out.width = "220", fig.align = "left", echo = FALSE}
+```{r}
+ #| out.width: 220
+ #| fig.align: left
+ #| echo: FALSE
 knitr::include_graphics("imgs/renata.jpg")
 ```
 :::
-
 ::: {.column width="70%"}
 **Renata Hirota** é jornalista de dados, formada na ECA-USP e no IME-USP. Lida com dados desde 2017 e atualmente trabalha na Associação Brasileira de Jurimetria. Colabora também com o Núcleo Jornalismo / Volt Data Lab, onde trabalha com análises de dados e desenvolvimento de ferramentas para jornalistas. Faz parte da comunidade R-Ladies São Paulo, que promove a diversidade de gênero na comunidade da linguagem de programação R.
 
 [@renata_mh](https://twitter.com/renata_mh) | [Núcleo Jornalismo](https://www.nucleo.jor.br/) | [ABJ](http://abj.org.br/)
-
 :::
-
 ::::
 
-`rmhirota.github.io/coda2022`
+## Apresentação e repositório
+
+- Slides: [rmhirota.github.io/coda2022](rmhirota.github.io/coda2022)  
+- Repositório: [github.com/rmhirota/coda2022](github.com/rmhirota/coda2022)
+
 
 ## Newsletters do Núcleo
+:::: {.columns}
+::: {.column width="33%"}
+```{r}
+ #| out.width: 250
+ #| fig.align: left
+ #| echo: FALSE
+knitr::include_graphics("imgs/news1.png")
+```
+:::
+::: {.column width="33%"}
+```{r}
+ #| out.width: 250
+ #| fig.align: left
+ #| echo: FALSE
+knitr::include_graphics("imgs/news2.png")
+```
+:::
+::: {.column width="33%"}
 
+```{r}
+#| echo: false
+#| out.width: 250
+#| fig.allign: left
+knitr::include_graphics("imgs/news3.png")
+```
+:::
+::::
+
+Mais aqui: [https://nucleo.jor.br/news/](https://nucleo.jor.br/news/)
 
 ## O que vamos ver
 
@@ -42,12 +72,23 @@ knitr::include_graphics("imgs/renata.jpg")
   - cron
   - Github actions
 
+## Dados para exercício!
+
+Coloquem seus emails nessa planilha: 
+
+[bit.ly/sheets-coda2022](https://bit.ly/sheets-coda2022)
+  
+
+No fim da oficina, vamos enviar um email para quem está aqui :)
+
 
 ## Criando um email
 
 Podemos usar a função `compose_email`
 
-```{r echo=TRUE}
+```{r}
+#| echo: true
+#| eval: false
 blastula::compose_email(
   body = blastula::md(paste0(
     "# Header 1\n",
@@ -71,3 +112,96 @@ output:
   blastula::blastula_email
 ---
 ```
+
+## Envio de email
+
+- SMTP: protocolo de transferência para configurar regras de comunicação entre servidores
+
+O que importa no nosso caso: saber qual o `host` e `port` do nosso servidor de email.
+
+O {blastula} já possui algumas coisas pré-configuradas para certos provedores
+(Gmail, Outlook e Office365), mas mesmo nesses casos, se você estiver usando
+autenticação em 2 fatores, é bem provável que precise do `host` e `port`.
+
+## Como conectar a sua conta de email
+
+Se você **não** usa verificação em 2 fatores:
+
+```{r}
+#| echo: true
+#| eval: false
+credenciais <- blastula::creds("re.hirota@gmail.com", "gmail")
+blastula::smtp_send(
+  email2,
+  to = "re.hirota@gmail.com",
+  from = "re.hirota@gmail.com",
+  subject = "Teste blastula",
+  credentials = credenciais
+)
+```
+
+## Como conectar a sua conta de email
+
+Se você usa verificação em 2 fatores, você vai precisar de mais dados:
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1-7"
+
+blastula::create_smtp_creds_key(
+  id = "gmail",
+  user = "re.hirota@gmail.com",
+  host = "smtp.gmail.com",
+  port = "465",
+  use_ssl = TRUE
+)
+credenciais <- blastula::creds_key("gmail")
+```
+
+
+## Envio
+
+```{r}
+#| echo: true
+#| eval: false
+blastula::smtp_send(
+  email2,
+  to = "re.hirota@gmail.com",
+  from = "re.hirota@gmail.com",
+  subject = "Teste blastula",
+  credentials = credenciais
+)
+```
+
+## Automatização: cron
+
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages("cronR")
+install.packages("shinyFiles")
+
+# exemplo de script R
+arquivo_r <- "R/script_r_exemplo.R"
+```
+
+Adicionar um cron:
+```{r}
+#| echo: true
+#| eval: false
+cmd <- cronR::cron_rscript(arquivo_r, frequency = "minutely")
+cronR::cron_add(cmd, dry_run = TRUE)
+```
+
+. . .
+
+Addin do RStudio:
+
+```{r}
+#| echo: true
+#| eval: false
+cronR::cron_rstudioaddin()
+```
+

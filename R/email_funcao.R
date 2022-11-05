@@ -1,3 +1,4 @@
+# Criação
 # Criando email com funções do blastula
 
 email1 <- blastula::compose_email(
@@ -29,10 +30,11 @@ dallas_home_sales <- txhousing |>
 blastula::render_email("connect_examples/connect-example-email.Rmd")
 
 
+# Envio ----
 
 # Se você NÃO usar verificação em 2 fatores
 blastula::smtp_send(
-  email1,
+  email2,
   to = "re.hirota@gmail.com",
   from = "re.hirota@gmail.com",
   subject = "Teste blastula",
@@ -42,17 +44,17 @@ blastula::smtp_send(
 # Se você usar verificação em 2 fatores
 # Criar primeiro uma chave
 blastula::create_smtp_creds_key(
-  id = "gmail",
+  id = "gmail2",
   user = "re.hirota@gmail.com",
   host = "smtp.gmail.com",
   port = "465",
-  use_ssl = FALSE
+  use_ssl = TRUE
 )
 # Envio
 blastula::smtp_send(
-  email1,
+  email2,
   to = "re.hirota@gmail.com",
   from = "re.hirota@gmail.com",
   subject = "Teste blastula",
-  credentials = blastula::creds_key("gmail")
+  credentials = blastula::creds_key("gmail2")
 )
