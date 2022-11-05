@@ -89,7 +89,7 @@ Podemos usar a função `compose_email`
 ```{r}
 #| echo: true
 #| eval: false
-blastula::compose_email(
+email <- blastula::compose_email(
   body = blastula::md(paste0(
     "# Header 1\n",
     "## Header 2\n",
@@ -130,11 +130,11 @@ Se você **não** usa verificação em 2 fatores:
 ```{r}
 #| echo: true
 #| eval: false
-credenciais <- blastula::creds("re.hirota@gmail.com", "gmail")
+credenciais <- blastula::creds("workshopcoda2022@gmail.com", "gmail")
 blastula::smtp_send(
-  email2,
+  email,
   to = "re.hirota@gmail.com",
-  from = "re.hirota@gmail.com",
+  from = "workshopcoda2022@gmail.com",
   subject = "Teste blastula",
   credentials = credenciais
 )
@@ -151,7 +151,7 @@ Se você usa verificação em 2 fatores, você vai precisar de mais dados:
 
 blastula::create_smtp_creds_key(
   id = "gmail",
-  user = "re.hirota@gmail.com",
+  user = "workshopcoda2022@gmail.com",
   host = "smtp.gmail.com",
   port = "465",
   use_ssl = TRUE
@@ -166,14 +166,13 @@ credenciais <- blastula::creds_key("gmail")
 #| echo: true
 #| eval: false
 blastula::smtp_send(
-  email2,
+  email,
   to = "re.hirota@gmail.com",
-  from = "re.hirota@gmail.com",
+  from = "workshopcoda2022@gmail.com",
   subject = "Teste blastula",
   credentials = credenciais
 )
 ```
-
 ## Automatização: cron
 
 
