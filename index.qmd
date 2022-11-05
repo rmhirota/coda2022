@@ -31,7 +31,7 @@ knitr::include_graphics("imgs/renata.jpg")
 - Repositório: [github.com/rmhirota/coda2022](github.com/rmhirota/coda2022)
 
 
-## Newsletters do Núcleo
+## [Newsletters do Núcleo](https://nucleo.jor.br/news/)
 :::: {.columns}
 ::: {.column width="33%"}
 ```{r}
@@ -60,7 +60,6 @@ knitr::include_graphics("imgs/news3.png")
 :::
 ::::
 
-Mais aqui: [https://nucleo.jor.br/news/](https://nucleo.jor.br/news/)
 
 ## O que vamos ver
 
